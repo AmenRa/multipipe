@@ -17,11 +17,9 @@
   </a>
 </p>
 
-
-
 ## ⚡️ Introduction
 
-[multipipe](https://github.com/AmenRa/multipipe) is a Python utility that allows you to create pipelines of functions to be executed on any given iterable (e.g., lists, generators) leveraging multiprocessing. [multipipe](https://github.com/AmenRa/multipipe) is built on top of [multiprocess](https://github.com/uqfoundation/multiprocess).
+[multipipe](https://github.com/AmenRa/multipipe) is a Python utility that allows you to create pipelines of functions to execute on any given iterable (e.g., lists, generators) by leveraging multiprocessing. [multipipe](https://github.com/AmenRa/multipipe) is built on top of [multiprocess](https://github.com/uqfoundation/multiprocess).
 
 
 ## 🔌 Requirements
@@ -55,6 +53,9 @@ Output:
 ```
 
 ### Using partials
+
+Sometimes, you may want to use [partials](https://docs.python.org/3/library/functools.html#functools.partial) to pass arguments to your functions.
+
 ```python
 from multipipe import Multipipe
 from functools import partial
@@ -73,9 +74,28 @@ Output:
 [ 1, 3, 5, 7, 9, 11, 13, 15, 17, 19 ]
 ```
 
+### Complex IO pipeline
 
+In this example, we lazily read data from a [JSONl](https://jsonlines.org) file, execute a pipeline of functions lazily, and write the results to a new [JSONl](https://jsonlines.org) file.
+In practice, this allows you to process huge files without loading their content into memory all-at-once.
 
+```python
+from multipipe import Multipipe
+from unified_io import read_jsonl, write_jsonl
 
+# Create a pipeline of functions
+pipe = Multipipe([ ... ])
+
+# Read a JSONl file line-by-line as a generator, i.e., lazily
+in_data = read_jsonl("path/to/input/file.jsonl", generator=True)
+
+# This is still a generator.
+# The pipeline will be executed lazily.
+out_data = pipe(in_data, generator=True)
+
+# Write a JSONl file from the generator executing the pipeline
+write_jsonl(out_data, "path/to/output/file.jsonl")
+```
 
 ## 🎁 Feature Requests
 Would you like to see other features implemented? Please, open a [feature request](https://github.com/AmenRa/multipipe/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=%5BFeature+Request%5D+title).

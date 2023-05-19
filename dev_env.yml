@@ -1,0 +1,17 @@
+name: multipipe
+dependencies:
+  - python=3.7
+  - ipykernel
+  - ipywidgets
+  - notebook
+  - pytest
+  - conda-forge::mkdocs-material
+  - conda-forge::mkdocs-autorefs
+  - conda-forge::mkdocstrings 
+  - conda-forge::mkdocstrings-python 
+  - pygments>=2.12
+  - multiprocess
+  - pip
+  - pip:
+    - twine
+    - unified-io
